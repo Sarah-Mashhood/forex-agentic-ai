@@ -4,9 +4,6 @@
 **An end-to-end resilient Forex strategy assistant** built with Python, FastAPI, Streamlit, and agentic orchestration.
 It fetches live forex data, analyzes market sentiment via news feeds, and generates AI-driven trading recommendations.
 
-<pre> ```mermaid flowchart LR A[User Input or API Trigger] --> B[Input Validation Guardrail] B --> C[Safe Pipeline Runner (Retries + Fallbacks)] C --> D[Market Data Tool (yfinance)] C --> E[News Tool (RSS: FXStreet, Investing, DailyFX)] D & E --> F[Strategy Agent (Price + Sentiment Logic)] F --> G[Recommendation Object (BUY / SELL / AVOID)] G --> H[Email Tool (SMTP / Dry-Run Mode)] G --> I[API Response via FastAPI] G --> J[Streamlit Dashboard Visualization] subgraph Safety Layer B C end subgraph Agents & Tools D E F end subgraph Output Layer H I J end ``` </pre>
-
-
 ### ⚙️ Tech Stack
 
 | Layer                       | Technology                                                |
@@ -59,6 +56,40 @@ Dockerfile
 .dockerignore
 .env.example
 ```
+![Forex Agentic AI System Architecture](FOREX_AGENTIC_AI.png)
+
+<details>
+<summary>Show Mermaid Flow Diagram (Source)</summary>
+
+```mermaid
+flowchart LR
+    A[User Input or API Trigger] --> B[Input Validation Guardrail]
+    B --> C[Safe Pipeline Runner (Retries + Fallbacks)]
+    C --> D[Market Data Tool (yfinance)]
+    C --> E[News Tool (RSS: FXStreet, Investing, DailyFX)]
+    D & E --> F[Strategy Agent (Price + Sentiment Logic)]
+    F --> G[Recommendation Object (BUY / SELL / AVOID)]
+    G --> H[Email Tool (SMTP / Dry-Run Mode)]
+    G --> I[API Response via FastAPI]
+    G --> J[Streamlit Dashboard Visualization]
+
+    subgraph Safety Layer
+        B
+        C
+    end
+
+    subgraph Agents & Tools
+        D
+        E
+        F
+    end
+
+    subgraph Output Layer
+        H
+        I
+        J
+    end
+</details> ```
 
 ---
 
