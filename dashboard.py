@@ -1,69 +1,70 @@
 # dashboard.py
-import streamlit as st
+import os
 import requests
+import streamlit as st
 
-# ----------------------------
-# API Base URL
-# ----------------------------
-API_BASE = "http://localhost:8000"
-try:
-    API_BASE = st.secrets.get("API_URL", API_BASE)
-except Exception:
-    pass
+# ===============================
+# 🌐 API Base URL Handling
+# ===============================
+# Uses environment variable in production (Railway), falls back to localhost for local dev
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
-# ----------------------------
-# Streamlit App
-# ----------------------------
-st.set_page_config(page_title="Forex Multi-Agent Dashboard", layout="centered")
+st.set_page_config(page_title="Agentic Forex AI Dashboard", page_icon="💹", layout="centered")
+
 st.title("💹 Agentic Forex AI Dashboard")
 
-# Default pairs
-default_pairs = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "AUDCAD", "GBPCAD"]
-selected_pair = st.selectbox("Select Currency Pair", default_pairs)
+# ===============================
+# Currency Pair Input
+# ===============================
+pairs = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "AUDCAD", "GBPCAD"]
+pair = st.selectbox("Select Currency Pair", options=pairs)
+custom_pair = st.text_input("Or add your own custom currency pair (e.g., NZDUSD, USDCHF):")
 
-# --- Custom pair input ---
-st.markdown("Or add your own custom currency pair:")
-custom_pair = st.text_input("Enter custom pair (e.g., NZDUSD, USDCHF):").strip().upper()
+if custom_pair.strip():
+    pair = custom_pair.strip().upper()
 
-# If user entered a custom pair, use it instead of dropdown
-final_pair = custom_pair if custom_pair else selected_pair
-
+# ===============================
+# Run Strategy
+# ===============================
 if st.button("🚀 Run Strategy"):
-    if not final_pair:
-        st.warning("Please select or enter a currency pair.")
+    try:
+        with st.spinner("Running strategy..."):
+            response = requests.get(f"{API_URL}/run", params={"pair": pair}, timeout=60)
+            response.raise_for_status()
+            data = response.json()
+
+        # ===============================
+        # Show Output
+        # ===============================
+        st.success(f"✅ Recommendation for {data['pair']}: **{data['stance']}**")
+        st.metric("Confidence", f"{data['confidence'] * 100:.1f}%")
+        st.write("**Rationale:**")
+        for line in data["rationale"]:
+            st.write(f"• {line}")
+
+        st.write("**Related News:**")
+        for item in data["news"]:
+            st.markdown(f"- [{item['title']}]({item['url']}) — *{item['source']}*")
+
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Request failed: {e}")
+        st.info(f"Hint: Is your API_URL set correctly?\n\n**Current API_URL:** `{API_URL}`")
+
+# ===============================
+# Health Check Section
+# ===============================
+st.divider()
+st.subheader("🩺 System Health")
+try:
+    health = requests.get(f"{API_URL}/health", timeout=10)
+    if health.status_code == 200:
+        st.success("API is healthy ✅")
     else:
-        with st.spinner(f"Running pipeline for {final_pair}..."):
-            try:
-                response = requests.get(f"{API_BASE}/run?pair={final_pair}", timeout=90)
-                if response.status_code == 200:
-                    rec = response.json()
+        st.warning(f"Health check failed ({health.status_code})")
+except Exception:
+    st.warning("⚠️ API not reachable")
 
-                    st.subheader(f"📊 Recommendation for {rec['pair']}")
-                    st.write(f"**Stance:** {rec['stance']}")
-                    st.write(f"**Confidence:** {rec['confidence']:.2f}")
-                    st.write(f"**Horizon:** {rec['horizon_hours']} hours")
-
-                    st.markdown("### 🧠 Rationale")
-                    for r in rec.get("rationale", []):
-                        st.markdown(f"- {r}")
-
-                    # --- News section ---
-                    if rec.get("news"):
-                        st.markdown("### 📰 Related News")
-                        for item in rec["news"]:
-                            with st.expander(item.get("title", "No title")):
-                                st.write(f"**Source:** {item.get('source', 'Unknown')}")
-                                if item.get("url"):
-                                    st.markdown(f"[Read more]({item['url']})")
-                                st.caption(item.get("timestamp", ""))
-                    else:
-                        st.info("No news found for this currency pair.")
-
-                else:
-                    st.error(f"API error {response.status_code}: {response.text}")
-
-            except Exception as e:
-                st.error(f"❌ Request failed: {e}")
-
-st.markdown("---")
-st.caption(f"Connected to API: {API_BASE}")
+# ===============================
+# Footer
+# ===============================
+st.caption("Built with ❤️ by Syeda Sarah Mashhood | Agentic Forex AI")
