@@ -18,7 +18,7 @@ COPY . /app
 # ============================
 RUN apt-get update && apt-get install -y \
     build-essential \
-    supervisor \          # ✅ ensure supervisor is installed for CMD
+    supervisor \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
