@@ -3,7 +3,7 @@
 **An end-to-end resilient Forex strategy assistant** built with Python, FastAPI, Streamlit, and agentic orchestration.  
 It fetches live forex data, analyzes market sentiment via news feeds, and generates AI-driven trading recommendations.
 
-### ⚙️ Tech Stack
+### Tech Stack
 
 | Layer                       | Technology                                                |
 | --------------------------- | --------------------------------------------------------- |
@@ -97,7 +97,7 @@ flowchart LR
 
 ## **Running Locally**
 
-### 1️⃣ Setup Environment
+### Setup Environment
 
 ```bash
 python -m venv .venv
@@ -242,7 +242,7 @@ Outputs confirm validation, retry, and fallback logic correctness.
 
 ---
 
-## 🪶 **Maintainer Notes**
+## **Maintainer Notes**
 
 * All runs are logged under `/src/data/traces/` with timestamps.
 * To extend:
@@ -254,7 +254,7 @@ Outputs confirm validation, retry, and fallback logic correctness.
 
 ---
 
-## ⚠️ Known Limitations
+## Known Limitations
 
 * Sentiment analysis accuracy depends on the quality and freshness of public RSS feeds (FXStreet, Investing.com, DailyFX).
 * The system does **not predict market prices** — it provides stance recommendations (BUY / SELL / AVOID) based on qualitative signals.
@@ -264,7 +264,7 @@ Outputs confirm validation, retry, and fallback logic correctness.
 
 ---
 
-## 🔄 Maintenance & Lifecycle
+## Maintenance & Lifecycle
 
 * Monitor run logs under `/src/data/traces/` for pipeline health and error detection.
 * Use the `/health` API endpoint for uptime checks (ideal for Render / Railway monitoring).
@@ -285,7 +285,7 @@ Outputs confirm validation, retry, and fallback logic correctness.
 
 ---
 
-## 🔐 Ethical & Compliance Notes
+## Ethical & Compliance Notes
 
 * All processed data is **publicly available**; no personal or sensitive data is stored or transmitted.
 * The system adheres to **principles of transparency and explainability** — every output includes rationale and news sources.
@@ -306,12 +306,10 @@ MIT License © 2025 **Syeda Sarah Mashhood**
 
 ---
 
-🪶 **Maintainer:**
+**Maintainer:**
 Syeda Sarah Mashhood (2025)
 For inquiries or contributions, open an issue or pull request on the project repository.
 
 ````
-
----
 
 
