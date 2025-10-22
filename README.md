@@ -1,7 +1,6 @@
-
 ##  **Agentic Forex AI — Multi-Agent System with Cloud-Ready API and Dashboard**
 
-**An end-to-end resilient Forex strategy assistant** built with Python, FastAPI, Streamlit, and agentic orchestration.
+**An end-to-end resilient Forex strategy assistant** built with Python, FastAPI, Streamlit, and agentic orchestration.  
 It fetches live forex data, analyzes market sentiment via news feeds, and generates AI-driven trading recommendations.
 
 ### ⚙️ Tech Stack
@@ -22,12 +21,12 @@ It fetches live forex data, analyzes market sentiment via news feeds, and genera
 
 This system automates daily forex analysis by combining:
 
-* **Quantitative signals** from real-time candle data
-* **Qualitative sentiment** from top financial news
-* **Agentic decision logic** that issues BUY / SELL / AVOID recommendations
-* **Email summaries** with rationale and news highlights
+* **Quantitative signals** from real-time candle data  
+* **Qualitative sentiment** from top financial news  
+* **Agentic decision logic** that issues BUY / SELL / AVOID recommendations  
+* **Email summaries** with rationale and news highlights  
 
-It’s designed for production reliability — handling API timeouts, tool failures, and malformed data gracefully.
+It’s designed for **production reliability** — handling API timeouts, tool failures, and malformed data gracefully.
 
 ---
 
@@ -55,7 +54,8 @@ requirements.txt
 Dockerfile
 .dockerignore
 .env.example
-```
+````
+
 ![Forex Agentic AI System Architecture](FOREX_AGENTIC_AI.png)
 
 <details>
@@ -89,8 +89,9 @@ flowchart LR
         I
         J
     end
- ```
- </details>
+```
+
+</details>
 
 ---
 
@@ -178,7 +179,7 @@ Fallbacks ensure **users always get valid output** (usually an “AVOID” stanc
    supervisord -c /app/supervisord.conf
    ```
 4. Add environment variables in Render dashboard (same as `.env`)
-5. Deploy 
+5. Deploy
 
 ### Live URLs
 
@@ -253,9 +254,64 @@ Outputs confirm validation, retry, and fallback logic correctness.
 
 ---
 
+## ⚠️ Known Limitations
+
+* Sentiment analysis accuracy depends on the quality and freshness of public RSS feeds (FXStreet, Investing.com, DailyFX).
+* The system does **not predict market prices** — it provides stance recommendations (BUY / SELL / AVOID) based on qualitative signals.
+* Network or feed downtime can lead to fallback “AVOID” stances.
+* News bias or incomplete RSS coverage may affect sentiment balance.
+* All outputs are **advisory only** — *not financial advice*.
+
+---
+
+## 🔄 Maintenance & Lifecycle
+
+* Monitor run logs under `/src/data/traces/` for pipeline health and error detection.
+* Use the `/health` API endpoint for uptime checks (ideal for Render / Railway monitoring).
+* Validate email sending periodically using `EMAIL_DRYRUN=False` in `.env`.
+* Update RSS sources quarterly in `news_tool.py` for relevance and reliability.
+* Add or remove supported pairs by updating `ALLOWED_PAIRS` in `input_validation.py` and `.env`.
+* Rebuild and redeploy Docker image whenever dependencies or APIs are updated:
+
+  ```bash
+  docker build -t forex-agentic-ai .
+  docker run -p 8000:8000 forex-agentic-ai
+  ```
+* Future enhancements:
+
+  * Integrate Sentry or Prometheus for monitoring.
+  * Add historical data dashboards via Streamlit.
+  * Introduce caching for RSS feeds to reduce latency.
+
+---
+
+## 🔐 Ethical & Compliance Notes
+
+* All processed data is **publicly available**; no personal or sensitive data is stored or transmitted.
+* The system adheres to **principles of transparency and explainability** — every output includes rationale and news sources.
+* **No financial advice**: recommendations are algorithmic insights, not investment guidance.
+* Built-in **guardrails** (validation + fallback + safe defaults) ensure graceful degradation under API/tool failures.
+* Codebase follows **AAIDC Responsible Deployment Guidelines**:
+
+  * Structured outputs validated via Pydantic schemas.
+  * Retry, timeout, and circuit-breaker resilience layers.
+  * Human-readable rationale for every automated decision.
+  * Clear auditability via trace logs.
+
+---
+
 ## **License**
 
 MIT License © 2025 **Syeda Sarah Mashhood**
 
 ---
+
+🪶 **Maintainer:**
+Syeda Sarah Mashhood (2025)
+For inquiries or contributions, open an issue or pull request on the project repository.
+
+````
+
+---
+
 
