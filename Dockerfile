@@ -18,7 +18,7 @@ COPY . /app
 # ============================
 RUN apt-get update && apt-get install -y \
     build-essential \
-    supervisor \
+    supervisor \           # ✅ for process management
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -31,10 +31,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ============================
 # 6️⃣ Expose ports
 # ============================
-EXPOSE 8000     # FastAPI
-EXPOSE 8501     # Streamlit
+
+# FastAPI
+EXPOSE 8000
+
+# Streamlit
+EXPOSE 8501
 
 # ============================
-# 7️⃣ Start both services
+# 7️⃣ Default command
 # ============================
 CMD ["supervisord", "-c", "/app/supervisord.conf"]
