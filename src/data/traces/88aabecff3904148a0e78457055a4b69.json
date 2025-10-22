@@ -1,0 +1,28 @@
+{
+  "run_id": "88aabecff3904148a0e78457055a4b69",
+  "pair": "AUDCAD",
+  "started_at": "2025-10-22T08:15:09.041769+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T08:15:10.807279+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "SELL",
+      "confidence": 0.7,
+      "rationale_count": 4,
+      "news_count": 0,
+      "avg_sentiment": 0.0,
+      "ts": "2025-10-22T08:15:15.254469+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T08:15:15.254486+00:00"
+    }
+  ],
+  "pair_category": "major",
+  "pair_valid": true,
+  "error": "Object of type Recommendation is not JSON serializable",
+  "status": "error"
+}

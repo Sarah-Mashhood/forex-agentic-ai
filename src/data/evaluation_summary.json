@@ -1,0 +1,68 @@
+{
+  "generated_at": "2025-10-22T08:15:23.746450+00:00",
+  "pairs": {
+    "GBPCAD": {
+      "category": "major",
+      "runs": 1,
+      "skipped_invalid": 0,
+      "success_rate": "0.0%",
+      "avg_confidence": 0.45,
+      "stances": {
+        "AVOID": 1
+      },
+      "failures": {
+        "Object of type Recommendation is not JSON serializable": 1
+      },
+      "timings": {
+        "strategy_tool_start": {
+          "avg": 2.71,
+          "min": 2.71,
+          "max": 2.71,
+          "samples": 1
+        },
+        "strategy_tool_end": {
+          "avg": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "samples": 1
+        }
+      }
+    },
+    "AUDCAD": {
+      "category": "major",
+      "runs": 1,
+      "skipped_invalid": 0,
+      "success_rate": "0.0%",
+      "avg_confidence": 0.7,
+      "stances": {
+        "SELL": 1
+      },
+      "failures": {
+        "Object of type Recommendation is not JSON serializable": 1
+      },
+      "timings": {
+        "strategy_tool_start": {
+          "avg": 4.45,
+          "min": 4.45,
+          "max": 4.45,
+          "samples": 1
+        },
+        "strategy_tool_end": {
+          "avg": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "samples": 1
+        }
+      }
+    }
+  },
+  "categories": {
+    "major": {
+      "pairs": 2,
+      "runs": 2,
+      "avg_confidence": 0.57,
+      "success_rate": "0.0%",
+      "failure_types": 2
+    }
+  }
+}

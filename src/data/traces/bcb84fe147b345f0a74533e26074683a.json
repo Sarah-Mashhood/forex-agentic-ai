@@ -1,0 +1,31 @@
+{
+  "run_id": "bcb84fe147b345f0a74533e26074683a",
+  "pair": "EURUSD",
+  "started_at": "2025-10-22T08:22:33.511180+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T08:22:33.511416+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "SELL",
+      "confidence": 0.7,
+      "rationale_count": 4,
+      "news_count": 0,
+      "ts": "2025-10-22T08:22:36.980825+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T08:22:36.980840+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-22T08:22:39.652507+00:00"
+    }
+  ],
+  "finished_at": "2025-10-22T08:22:39.652565+00:00",
+  "status": "success"
+}

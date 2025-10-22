@@ -1,0 +1,31 @@
+{
+  "run_id": "9be76365c38940aca65dc9996b042a82",
+  "pair": "USDJPY",
+  "started_at": "2025-10-22T08:22:44.183738+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T08:22:44.184229+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "SELL",
+      "confidence": 0.7,
+      "rationale_count": 4,
+      "news_count": 0,
+      "ts": "2025-10-22T08:22:46.239303+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T08:22:46.239318+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-22T08:22:48.858318+00:00"
+    }
+  ],
+  "finished_at": "2025-10-22T08:22:48.858350+00:00",
+  "status": "success"
+}

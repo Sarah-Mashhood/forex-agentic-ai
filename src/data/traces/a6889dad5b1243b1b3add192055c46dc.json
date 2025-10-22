@@ -1,0 +1,31 @@
+{
+  "run_id": "a6889dad5b1243b1b3add192055c46dc",
+  "pair": "EURUSD",
+  "started_at": "2025-10-22T12:20:58.702688+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T12:20:58.703518+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "AVOID",
+      "confidence": 0.45,
+      "rationale_count": 7,
+      "news_count": 3,
+      "ts": "2025-10-22T12:21:05.800660+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T12:21:05.800682+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-22T12:21:05.809257+00:00"
+    }
+  ],
+  "finished_at": "2025-10-22T12:21:05.809297+00:00",
+  "status": "success"
+}

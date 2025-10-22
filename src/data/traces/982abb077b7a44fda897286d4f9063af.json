@@ -1,0 +1,31 @@
+{
+  "run_id": "982abb077b7a44fda897286d4f9063af",
+  "pair": "AUDCAD",
+  "started_at": "2025-10-22T12:25:36.037354+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T12:25:36.038050+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "AVOID",
+      "confidence": 0.45,
+      "rationale_count": 5,
+      "news_count": 1,
+      "ts": "2025-10-22T12:25:41.429482+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T12:25:41.429497+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-22T12:25:41.432900+00:00"
+    }
+  ],
+  "finished_at": "2025-10-22T12:25:41.432925+00:00",
+  "status": "success"
+}

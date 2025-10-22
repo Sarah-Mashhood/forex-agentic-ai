@@ -1,0 +1,31 @@
+{
+  "run_id": "1b6956e933524571b9e5ab8e689970b3",
+  "pair": "GBPUSD",
+  "started_at": "2025-10-22T08:22:39.654953+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-22T08:22:39.656059+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "AVOID",
+      "confidence": 0.45,
+      "rationale_count": 4,
+      "news_count": 0,
+      "ts": "2025-10-22T08:22:41.715427+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-22T08:22:41.715445+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-22T08:22:44.181491+00:00"
+    }
+  ],
+  "finished_at": "2025-10-22T08:22:44.181528+00:00",
+  "status": "success"
+}
