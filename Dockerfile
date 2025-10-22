@@ -18,15 +18,15 @@ COPY . /app
 # ============================
 RUN apt-get update && apt-get install -y \
     build-essential \
-    supervisor \           # ✅ for process management
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+    supervisor \
+    libpq-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # ============================
 # 5️⃣ Install Python dependencies
 # ============================
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # ============================
 # 6️⃣ Expose ports
