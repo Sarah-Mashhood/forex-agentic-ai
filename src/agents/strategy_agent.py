@@ -1,15 +1,21 @@
 # src/agents/strategy_agent.py
 from typing import List, Union
+
+try:
+    from textblob import TextBlob  # type: ignore
+except Exception:  # pragma: no cover - optional dependency at runtime
+    TextBlob = None  # type: ignore
+
 from ..schemas import Recommendation, Candle, NewsItem
-from textblob import TextBlob
 
 
 def _headline_sentiment(text: str) -> float:
     """Return sentiment polarity between -1.0 (negative) and +1.0 (positive)."""
+    if not text.strip() or TextBlob is None:
+        return 0.0
+
     try:
-        if not text.strip():
-            return 0.0
-        return TextBlob(text).sentiment.polarity
+        return TextBlob(text).sentiment.polarity  # type: ignore[operator]
     except Exception:
         return 0.0
 
