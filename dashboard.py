@@ -7,7 +7,7 @@ import streamlit as st
 # 🌐 API Base URL Handling
 # ===============================
 # Uses environment variable in production (Railway), falls back to localhost for local dev
-API_URL = os.getenv("API_URL", "http://localhost:8000")
+API_URL = os.getenv("API_URL", "http://localhost:8000/api").rstrip("/")
 
 st.set_page_config(page_title="Agentic Forex AI Dashboard", page_icon="💹", layout="centered")
 

@@ -18,7 +18,6 @@ COPY . /app
 # ============================
 RUN apt-get update && apt-get install -y \
     build-essential \
-    supervisor \
     libpq-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -32,13 +31,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # 6️⃣ Expose ports
 # ============================
 
-# FastAPI
-EXPOSE 8000
-
-# Streamlit
-EXPOSE 8501
+# FastAPI (serves both API + dashboard)
+EXPOSE 8080
 
 # ============================
 # 7️⃣ Default command
 # ============================
-CMD ["supervisord", "-c", "/app/supervisord.conf"]
+CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'"]
