@@ -11,3 +11,4 @@ feedparser
 fastapi
 uvicorn[standard]
 streamlit
+textblob
