@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists
 RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PYTHONPATH=/app
-ENV PORT=8501  # default for local runs
+# default port for local runs
+ENV PORT=8501
 
 EXPOSE 8501
 EXPOSE 8000
