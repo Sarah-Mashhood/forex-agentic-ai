@@ -32,9 +32,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # ============================
 
 # FastAPI (serves both API + dashboard)
-EXPOSE 8080
+EXPOSE 8000
 
 # ============================
 # 7️⃣ Default command
 # ============================
-CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000} --proxy-headers --forwarded-allow-ips='*'"]
+CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000}"]

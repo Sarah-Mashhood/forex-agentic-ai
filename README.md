@@ -136,10 +136,7 @@ Visit [http://localhost:8000/](http://localhost:8000/) for the hosted dashboard 
 streamlit run dashboard.py
 ```
 
-The Streamlit client defaults to `API_URL=http://localhost:8000/api`. If you deploy the API elsewhere, set
-`API_URL` to the base path that exposes the `run` and `health` endpoints (for example,
-`https://your-domain.up.railway.app/api`). Legacy `/run` and `/health` paths remain available for backward
-compatibility.
+Set `API_URL=http://localhost:8000/api` if you want the Streamlit client to talk to the locally running API.
 
 ---
 
@@ -176,14 +173,13 @@ Because the API and dashboard now share the same FastAPI process, you only need 
 3. Set the start command to the default (Docker `CMD`) or explicitly to:
 
    ```bash
-   uvicorn api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips '*'
+   uvicorn api:app --host 0.0.0.0 --port $PORT
    ```
 
 4. Configure the usual environment variables (`EMAIL_*`, etc.).
 5. Deploy – the public domain now serves both the dashboard (at `/`) and the API namespace (at `/api/*`).
 
 > **Note:** If you run Streamlit as a separate client, point `API_URL` to `https://<your-service>.up.railway.app/api`.
-> Hosting platforms that require a plain JSON health probe can use the lightweight `/healthz` endpoint.
 
 ---
 

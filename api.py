@@ -334,20 +334,6 @@ def health_check():
 # Mount the router under /api
 app.include_router(router)
 
-# Backwards compatibility: expose legacy non-prefixed endpoints so the
-# existing Streamlit dashboard and any third-party integrations that still
-# call ``/run`` or ``/health`` continue to function without needing
-# configuration changes.
-app.add_api_route("/run", run_pipeline, methods=["GET"], response_model=Recommendation)
-app.add_api_route("/history", history, methods=["GET"], include_in_schema=False)
-app.add_api_route(
-    "/recommendations",
-    recommendations,
-    methods=["GET"],
-    response_model=List[Recommendation]
-)
-app.add_api_route("/health", health_check, methods=["GET"])
-
 
 @app.get("/", response_class=HTMLResponse)
 def index():
@@ -359,9 +345,3 @@ def index():
 def index_head() -> Response:
     """Fast heartbeat for platforms that probe the root path with HEAD."""
     return Response(status_code=200)
-
-
-@app.get("/healthz")
-def platform_health_check():
-    """Simple health endpoint for platform-level probes."""
-    return {"status": "ok"}
