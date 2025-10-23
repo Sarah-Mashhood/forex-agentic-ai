@@ -13,3 +13,5 @@ uvicorn[standard]
 streamlit
 supervisor
 textblob
+prometheus_client
+loguru
