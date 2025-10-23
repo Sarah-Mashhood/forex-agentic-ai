@@ -1,0 +1,32 @@
+{
+  "run_id": "5185a288a45c4982a50d932cfa36c249",
+  "pair": "USDJPY",
+  "started_at": "2025-10-23T14:12:01.991418+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-23T14:12:01.992576+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "SELL",
+      "confidence": 0.7,
+      "rationale_count": 14,
+      "news_count": 10,
+      "ts": "2025-10-23T14:12:06.864613+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-23T14:12:06.864642+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-23T14:12:09.746688+00:00"
+    }
+  ],
+  "finished_at": "2025-10-23T14:12:09.746732+00:00",
+  "status": "success",
+  "recommendation": "pair='USDJPY' stance='SELL' confidence=0.7 horizon_hours=24 rationale=['Daily move -0.0410', 'EUR/USD languishes ahead of the Eurozone Consumer Confidence release (www.fxstreet.com) [Sentiment=+0.00]', 'Silver Price Forecast: XAG/USD attracts bids near $48 on renewed Sino-US trade tensions (www.fxstreet.com) [Sentiment=+0.10]', 'USD/CNH: Likely to trade between 7.1220 and 7.1320 \u2013 UOB Group (www.fxstreet.com) [Sentiment=+0.00]', 'USD/JPY: Likely to trade trade between 150.00 and 153.00 \u2013 UOB Group (www.fxstreet.com) [Sentiment=+0.00]', 'NZD/USD: Likely to trade in a range of 0.5725/0.5755 \u2013 UOB Group (www.fxstreet.com) [Sentiment=+0.00]', 'USD/CAD trades steadily near 1.40 \u2013 BBH (www.fxstreet.com) [Sentiment=+0.10]', 'AUD/USD: Expected to trade in a sideways range of 0.6445/0.6555 \u2013 UOB Group (www.fxstreet.com) [Sentiment=-0.10]', \"USD/JPY rallies beyond 152.50 on speculation about Japan's stimulus (www.fxstreet.com) [Sentiment=+0.00]\", 'USD steady ahead of key US CPI data \u2013 BBH (www.fxstreet.com) [Sentiment=+0.08]', 'GBP/USD: Likely to trade in a sideways range of 1.3330/1.3380 \u2013 UOB Group (www.fxstreet.com) [Sentiment=+0.00]', '\ud83e\udde0 Average news sentiment = +0.02', '\ud83d\ude10 Neutral or mixed sentiment; no strong news influence.', 'This is not financial advice.'] news=[NewsItem(title='EUR/USD languishes ahead of the Eurozone Consumer Confidence release', url='https://www.fxstreet.com/news/eur-usd-ticks-lower-as-us-dollar-edges-up-amid-fresh-trade-tensions-202510230737', timestamp=datetime.datetime(2025, 10, 23, 11, 55, 53, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='Silver Price Forecast: XAG/USD attracts bids near $48 on renewed Sino-US trade tensions', url='https://www.fxstreet.com/news/silver-price-forecast-xag-usd-attracts-bids-near-48-on-renewed-sino-us-trade-tensions-202510231130', timestamp=datetime.datetime(2025, 10, 23, 11, 30, 16, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='USD/CNH: Likely to trade between 7.1220 and 7.1320 \u2013 UOB Group', url='https://www.fxstreet.com/news/usd-cnh-likely-to-trade-between-71220-and-71320-uob-group-202510231123', timestamp=datetime.datetime(2025, 10, 23, 11, 23, 44, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='USD/JPY: Likely to trade trade between 150.00 and 153.00 \u2013 UOB Group', url='https://www.fxstreet.com/news/usd-jpy-likely-to-trade-trade-between-15000-and-15300-uob-group-202510231100', timestamp=datetime.datetime(2025, 10, 23, 11, 0, 53, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='NZD/USD: Likely to trade in a range of 0.5725/0.5755 \u2013 UOB Group', url='https://www.fxstreet.com/news/nzd-usd-likely-to-trade-in-a-range-of-05725-05755-uob-group-202510231029', timestamp=datetime.datetime(2025, 10, 23, 10, 29, 44, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='USD/CAD trades steadily near 1.40 \u2013 BBH', url='https://www.fxstreet.com/news/usd-cad-trades-steadily-near-140-bbh-202510231027', timestamp=datetime.datetime(2025, 10, 23, 10, 27, 2, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='AUD/USD: Expected to trade in a sideways range of 0.6445/0.6555 \u2013 UOB Group', url='https://www.fxstreet.com/news/aud-usd-expected-to-trade-in-a-sideways-range-of-06445-06555-uob-group-202510231010', timestamp=datetime.datetime(2025, 10, 23, 10, 10, 41, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title=\"USD/JPY rallies beyond 152.50 on speculation about Japan's stimulus\", url='https://www.fxstreet.com/news/usd-jpy-rallies-beyond-15250-on-speculation-about-japans-stimulus-202510230949', timestamp=datetime.datetime(2025, 10, 23, 9, 49, 45, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='USD steady ahead of key US CPI data \u2013 BBH', url='https://www.fxstreet.com/news/usd-steady-ahead-of-key-us-data-bbh-202510230949', timestamp=datetime.datetime(2025, 10, 23, 9, 49, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='GBP/USD: Likely to trade in a sideways range of 1.3330/1.3380 \u2013 UOB Group', url='https://www.fxstreet.com/news/gbp-usd-likely-to-trade-in-a-sideways-range-of-13330-13380-uob-group-202510230942', timestamp=datetime.datetime(2025, 10, 23, 9, 42, 33, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None)]"
+}

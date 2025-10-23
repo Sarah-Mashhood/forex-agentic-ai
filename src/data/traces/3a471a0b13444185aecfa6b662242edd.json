@@ -1,0 +1,32 @@
+{
+  "run_id": "3a471a0b13444185aecfa6b662242edd",
+  "pair": "GBPUSD",
+  "started_at": "2025-10-23T14:11:54.767872+00:00",
+  "steps": [
+    {
+      "step": "strategy_tool_start",
+      "ts": "2025-10-23T14:11:54.768767+00:00"
+    },
+    {
+      "step": "strategy_tool_end",
+      "stance": "AVOID",
+      "confidence": 0.45,
+      "rationale_count": 7,
+      "news_count": 3,
+      "ts": "2025-10-23T14:11:58.658963+00:00"
+    },
+    {
+      "step": "email_agent_start",
+      "ts": "2025-10-23T14:11:58.658984+00:00"
+    },
+    {
+      "step": "email_agent_end",
+      "email_status": "success",
+      "recipient": null,
+      "ts": "2025-10-23T14:12:01.988415+00:00"
+    }
+  ],
+  "finished_at": "2025-10-23T14:12:01.988436+00:00",
+  "status": "success",
+  "recommendation": "pair='GBPUSD' stance='AVOID' confidence=0.45 horizon_hours=24 rationale=['Daily move 0.0004', 'EUR/GBP extends gains as BoE dovish tone and fiscal concerns weigh on Sterling (www.fxstreet.com) [Sentiment=+0.00]', 'GBP/JPY Price Forecast: Pound crawls towards 204.00 on Yen weakness (www.fxstreet.com) [Sentiment=+0.00]', 'GBP/USD: Likely to trade in a sideways range of 1.3330/1.3380 \u2013 UOB Group (www.fxstreet.com) [Sentiment=+0.00]', '\ud83e\udde0 Average news sentiment = +0.00', '\ud83d\ude10 Neutral or mixed sentiment; no strong news influence.', 'This is not financial advice.'] news=[NewsItem(title='EUR/GBP extends gains as BoE dovish tone and fiscal concerns weigh on Sterling', url='https://www.fxstreet.com/news/eur-gbp-extends-gains-as-boe-dovish-tone-and-fiscal-concerns-weigh-on-sterling-202510231345', timestamp=datetime.datetime(2025, 10, 23, 13, 45, 54, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='GBP/JPY Price Forecast: Pound crawls towards 204.00 on Yen weakness', url='https://www.fxstreet.com/news/gbp-jpy-price-forecast-pound-crawls-towards-20400-on-yen-weakness-202510231133', timestamp=datetime.datetime(2025, 10, 23, 11, 33, 36, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None), NewsItem(title='GBP/USD: Likely to trade in a sideways range of 1.3330/1.3380 \u2013 UOB Group', url='https://www.fxstreet.com/news/gbp-usd-likely-to-trade-in-a-sideways-range-of-13330-13380-uob-group-202510230942', timestamp=datetime.datetime(2025, 10, 23, 9, 42, 33, tzinfo=datetime.timezone.utc), source='www.fxstreet.com', sentiment=None)]"
+}
