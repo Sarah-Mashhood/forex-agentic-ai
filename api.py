@@ -1,5 +1,5 @@
 # api.py
-from fastapi import FastAPI, HTTPException, Query, APIRouter
+from fastapi import FastAPI, HTTPException, Query, APIRouter, Response
 from typing import List
 from datetime import datetime
 from src.guardrails.input_validation import validate_pair
@@ -339,3 +339,9 @@ app.include_router(router)
 def index():
     """Serve a lightweight dashboard so the API and UI share one port."""
     return HTMLResponse(content=FRONTEND_HTML)
+
+
+@app.head("/")
+def index_head() -> Response:
+    """Fast heartbeat for platforms that probe the root path with HEAD."""
+    return Response(status_code=200)
