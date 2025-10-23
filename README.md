@@ -8,10 +8,10 @@ It fetches live forex data, analyzes market sentiment via news feeds, and genera
 | Layer                       | Technology                                                |
 | --------------------------- | --------------------------------------------------------- |
 | **Backend / Orchestration** | FastAPI, LangChain-style modular agents                   |
-| **Frontend Dashboard**      | Streamlit                                                 |
+| **Frontend Dashboard**      | Streamlit (local dev) + Vanilla JS (served by FastAPI)    |
 | **Data Sources**            | Yahoo Finance (`yfinance`), FXStreet / Investing RSS      |
 | **Validation & Guardrails** | Pydantic, Custom input & pipeline guardrails              |
-| **Deployment**              | Docker + Supervisor (API + Dashboard in one container)    |
+| **Deployment**              | Docker + Uvicorn (single process, single port)            |
 | **Resilience**              | Retry logic, fallbacks, safe defaults, structured tracing |
 | **Observability**           | `/health` endpoint, logs, optional Sentry integration     |
 
@@ -47,9 +47,8 @@ src/
 ├── graph.py                    # Orchestrates pipeline per currency pair
 ├── schemas.py                  # Pydantic models (Candle, NewsItem, Recommendation)
 ├── main.py                     # CLI entrypoint for full batch runs
-api.py                          # FastAPI endpoints
-dashboard.py                    # Streamlit dashboard
-supervisord.conf                # Runs API + Dashboard together
+api.py                          # FastAPI endpoints + hosted dashboard
+dashboard.py                    # Streamlit dashboard (optional local UI)
 requirements.txt
 Dockerfile
 .dockerignore
@@ -127,21 +126,17 @@ SMTP_PASS=your_app_password
 uvicorn api:app --reload --port 8000
 ```
 
-Visit [http://localhost:8000/docs](http://localhost:8000/docs) for interactive API docs.
+Visit [http://localhost:8000/](http://localhost:8000/) for the hosted dashboard and [http://localhost:8000/docs](http://localhost:8000/docs) for interactive API docs.
 
 ---
 
-### Run Streamlit Dashboard
+### Run Streamlit Dashboard (optional)
 
 ```bash
 streamlit run dashboard.py
 ```
 
-Displays:
-
-* Currency dropdown
-* Stance, confidence, rationale, and news highlights
-* Backend health indicator
+Set `API_URL=http://localhost:8000/api` if you want the Streamlit client to talk to the locally running API.
 
 ---
 
@@ -167,25 +162,24 @@ Fallbacks ensure **users always get valid output** (usually an “AVOID” stanc
 
 ---
 
-## **Deployment (Render Cloud)**
+## **Deployment (Railway / Render / any single-port PaaS)**
+
+Because the API and dashboard now share the same FastAPI process, you only need a single web service.
 
 ### Build & Deploy
 
-1. Push your repo to GitHub
-2. Create new **Render Web Service → Docker environment**
-3. Set command:
+1. Push your repo to GitHub.
+2. Create a new **Docker-based web service** (Railway, Render, Fly.io, etc.).
+3. Set the start command to the default (Docker `CMD`) or explicitly to:
 
    ```bash
-   supervisord -c /app/supervisord.conf
+   uvicorn api:app --host 0.0.0.0 --port $PORT
    ```
-4. Add environment variables in Render dashboard (same as `.env`)
-5. Deploy
 
-### Live URLs
+4. Configure the usual environment variables (`EMAIL_*`, etc.).
+5. Deploy – the public domain now serves both the dashboard (at `/`) and the API namespace (at `/api/*`).
 
-* API: `https://forex-agentic-ai.onrender.com`
-* Health: `https://forex-agentic-ai.onrender.com/health`
-* Dashboard: `https://forex-agentic-ai.onrender.com:8501`
+> **Note:** If you run Streamlit as a separate client, point `API_URL` to `https://<your-service>.up.railway.app/api`.
 
 ---
 

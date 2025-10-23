@@ -11,4 +11,3 @@ feedparser
 fastapi
 uvicorn[standard]
 streamlit
-supervisor
