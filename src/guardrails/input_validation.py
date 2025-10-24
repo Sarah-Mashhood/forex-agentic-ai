@@ -2,9 +2,26 @@
 from typing import List
 
 # Allowed currency pairs
-ALLOWED_PAIRS = [
-    "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "AUDCAD", "GBPCAD"
+MAJOR_PAIRS = [
+    "EURUSD", "USDJPY", "GBPUSD", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD"
 ]
+MINOR_PAIRS = [
+    "EURGBP",
+    "EURJPY",
+    "GBPJPY",
+    "EURCHF",
+    "EURAUD",
+    "AUDJPY",
+    "GBPCHF",
+    "NZDJPY",
+    "CADJPY",
+    "AUDNZD",
+    "EURCAD",
+    "CHFJPY",
+    "GBPAUD"
+]
+
+ALLOWED_PAIRS = MAJOR_PAIRS + MINOR_PAIRS
 
 def validate_pair(pair: str) -> str:
     """
