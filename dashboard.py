@@ -20,7 +20,7 @@ st.title("💹 Agentic Forex AI Dashboard")
 # ==================================
 # Currency Pair Input
 # ==================================
-pairs = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "AUDCAD", "GBPCAD"]
+pairs = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD"]
 pair = st.selectbox("Select Currency Pair", options=pairs)
 custom_pair = st.text_input("Or add your own custom currency pair (e.g., NZDUSD, USDCHF):")
 

@@ -18,7 +18,9 @@ MINOR_PAIRS = [
     "AUDNZD",
     "EURCAD",
     "CHFJPY",
-    "GBPAUD"
+    "GBPAUD",
+    "AUDCAD",
+    "GBPCAD"
 ]
 
 ALLOWED_PAIRS = MAJOR_PAIRS + MINOR_PAIRS
@@ -48,3 +50,4 @@ def validate_pairs(pairs: List[str]) -> List[str]:
     for p in pairs:
         valid_pairs.append(validate_pair(p))
     return valid_pairs
+ 
