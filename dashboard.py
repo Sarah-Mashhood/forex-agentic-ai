@@ -41,12 +41,23 @@ if st.button("🚀 Run Strategy"):
         st.success(f"✅ Recommendation for {data['pair']}: **{data['stance']}**")
         st.metric("Confidence", f"{data['confidence'] * 100:.1f}%")
         st.write("**Rationale:**")
-        for line in data["rationale"]:
+        for line in data.get("rationale", []):
             st.write(f"• {line}")
 
+        # ---- Related News section with graceful empty handling ----
         st.write("**Related News:**")
-        for item in data["news"]:
-            st.markdown(f"- [{item['title']}]({item['url']}) — *{item['source']}*")
+        news_items = data.get("news") or []
+        if news_items:
+            for item in news_items:
+                title = item.get("title") or "No title"
+                source = item.get("source") or "Unknown"
+                url = item.get("url")
+                if url:
+                    st.markdown(f"- [{title}]({url}) — *{source}*")
+                else:
+                    st.markdown(f"- {title} — *{source}*")
+        else:
+            st.write("No recent news articles found for this pair in the last 48 hours.")
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Request failed: {e}")
@@ -84,8 +95,12 @@ try:
         metrics_text = metrics_response.text
 
         # Extract latency histogram buckets
-        latencies = re.findall(r'api_request_latency_seconds_bucket{path=".*?"[^}]*} (\d+)', metrics_text)
-        total_requests = re.findall(r'api_request_total{method="GET",path=".*?",status="200"} (\d+)', metrics_text)
+        latencies = re.findall(
+            r'api_request_latency_seconds_bucket{path=".*?"[^}]*} (\d+)', metrics_text
+        )
+        total_requests = re.findall(
+            r'api_request_total{method="GET",path=".*?",status="200"} (\d+)', metrics_text
+        )
         health_gauge = re.search(r'api_health_status (\d+)', metrics_text)
 
         latency_value = int(latencies[-1]) if latencies else 0
@@ -96,9 +111,12 @@ try:
         st.metric("Total API Requests", total_reqs)
         st.metric("Recent Latency (observed count)", latency_value)
 
-        # Tiny sparkline effect
-        latency_chart = [int(v) for v in latencies[-20:]] if len(latencies) > 1 else [latency_value]
-        st.line_chart(latency_chart, height=100)
+        # ---- Removed tiny sparkline chart that caused the '0 0' at bottom ----
+        # If you ever want a chart back, you can gate it like:
+        # if len(latencies) > 1 and any(int(v) > 0 for v in latencies):
+        #     latency_chart = [int(v) for v in latencies[-20:]]
+        #     st.line_chart(latency_chart, height=100)
+
     else:
         st.warning("⚠️ Unable to fetch metrics from /api/metrics")
 except Exception as e:

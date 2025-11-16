@@ -35,6 +35,33 @@ Each strategy run combines live forex data, market news, and rule-based decision
 
 ---
 
+## 🔧 Prerequisites & Requirements
+
+### System Requirements
+- Python 3.10+
+- 4 GB RAM (minimum)
+- Docker (optional but recommended)
+- Stable internet connection (required for yFinance & RSS feeds)
+
+### Python Dependencies
+Installed automatically via `requirements.txt`:
+- FastAPI, Uvicorn
+- Streamlit
+- Pydantic
+- feedparser
+- yfinance
+- Prometheus client
+- Loguru
+
+### Knowledge Requirements
+Users should be familiar with:
+- Basic Python scripting
+- REST API concepts
+- JSON data formats
+- Fundamentals of forex candles & terminology
+
+---
+
 ## 🧩 Architecture
 
 ```
@@ -64,6 +91,52 @@ Each strategy run combines live forex data, market news, and rule-based decision
 |   - generate strategies    |
 +----------------------------+
 ```
+
+---
+## 🤖 Agent Roles & Responsibilities
+
+**Market Agent**  
+Fetches hourly/daily forex candles using yFinance. Handles API errors and retries.
+
+**News Agent**  
+Parses financial news via RSS feeds (FXStreet, Investing.com, DailyFX). Extracts timestamps and deduplicates items.
+
+**Strategy Agent**  
+Combines candle data and news signals to output BUY / SELL / AVOID recommendations with confidence scoring.
+
+**Validation Guard**  
+Validates currency pairs, enforces runtime safety rules, and ensures fallback behavior during failures.
+
+**Email Agent**  
+Sends daily strategy summaries to the user’s email (supports Live and Dry modes).
+
+---
+
+## 🔄 Orchestration Framework
+
+All agent interactions are coordinated through a lightweight orchestration layer defined in `src/graph.py`.
+
+The orchestrator:
+- Defines the execution order: **Market → News → Strategy → Validation → Email**
+- Ensures synchronous communication between agents
+- Wraps each agent stage with safe execution via `pipeline_safety.py`
+- Applies **timeouts, retries, and fallback logic**
+- Captures structured traces for observability and debugging
+
+This design ensures that a failure in one agent does not collapse the entire pipeline and keeps the system modular and extensible.
+
+---
+
+## 🧑‍💻 Human-in-the-Loop (HITL) Integration
+
+Although the system runs autonomously, specific checkpoints allow user oversight:
+
+- **Streamlit Dashboard** — Users can inspect market data, news, and generated recommendations.
+- **Email Reports** — Daily summaries let users validate signals before taking action.
+- **Validation Guard** — Prevents incorrect inputs from causing invalid decisions.
+- **Trace Logs** — Each run is fully traceable for manual review.
+
+This balance of automation and human oversight ensures safe and explainable financial decision support.
 
 ---
 
@@ -131,6 +204,33 @@ curl http://localhost:8000/api/metrics
 
 ---
 
+
+## 🔐 Environment Variables
+
+This project includes a .env.example file.
+
+Create your .env file by copying it:
+```bash
+cp .env.example .env
+```
+
+Then fill in:
+
+- Currency pairs
+- Email sender/receiver
+- Gmail App Password
+- Optional trace directory
+
+Using env vars with Docker
+
+```bash
+docker run --env-file .env -p 8501:8501 -p 8000:8000 forex-ai
+```
+
+For Railway deployment, add the same variables in **Settings → Variables**.
+
+---
+
 ## 🚀 Deploy on Railway (Free)
 
 1. Push code to GitHub
@@ -152,6 +252,21 @@ curl http://localhost:8000/api/metrics
    * Dashboard URL → `https://your-app.up.railway.app`
    * API → `https://your-app.up.railway.app/api/health`
    * Metrics → `https://your-app.up.railway.app/api/metrics`
+
+---
+
+## 🛡 Resilience & Fault Tolerance
+
+The system is designed for stability under real-world network and data issues:
+
+- **Retry logic** for yFinance and RSS requests  
+- **Timeout protection** (via `pipeline_safety.py`)  
+- **Graceful fallback behavior** when feeds are unavailable  
+- **Input validation** — unsupported or malformed pairs are rejected  
+- **Structured error logs** written to `/data/traces/`  
+- **Agent isolation** — failure in one agent does not crash the entire pipeline
+
+These guardrails ensure consistent execution even under unreliable data sources.
 
 ---
 
@@ -238,11 +353,103 @@ fx_multiagent/
 
 ---
 
+## 🐞 Troubleshooting Guide
+
+**RSS feeds return 0 items**  
+• RSS source may be unavailable → retry  
+• Check firewall / internet  
+• Some feeds (DailyFX) block too many requests
+
+**Email sending fails**  
+• Verify Gmail App Password  
+• Ensure `EMAIL_USER` and `EMAIL_PASS` env variables are set  
+• Check Google “less secure app” restrictions
+
+**yFinance returning empty data**  
+• This is common during off-market hours  
+• Try switching interval from `1h` to `30m`  
+• yFinance occasionally rate-limits
+
+**Docker container not starting**  
+• Make sure Docker Desktop is running  
+• Run: `docker system prune -f` and rebuild
+
+**Prometheus metrics not visible**  
+• Ensure `/api/metrics` is exposed  
+• On Railway, verify no port conflict
+
+---
+
 ## 🧡 Credits
 
 **Developed by:** *Syeda Sarah Mashhood*
 **Purpose:** Educational & analytical project for multi-agent observability and decision automation in Forex.
 **Stack:** Python · FastAPI · Streamlit · Prometheus · Docker · Railway
+
+---
+## 🔧 Maintenance & Support Status
+
+Agentic Forex AI is an actively maintained project. Updates include:
+
+- Dependency updates (FastAPI, yFinance, Prometheus client)
+- Bug fixes and resilience improvements
+- Enhancements to strategy logic and agent interactions
+- Security patches when required
+- Migration guides provided for breaking changes
+
+For issues, suggestions, or feature requests, please use the GitHub **Issues** tab.
+
+---
+
+## 📜 License
+
+This project is licensed under the **Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)** license.
+
+You are free to:
+- Share — copy and redistribute the material
+- Adapt — remix, transform, and build upon the material
+
+Under the following terms:
+- **Attribution** — You must give appropriate credit.
+- **ShareAlike** — Derivatives must be distributed under the same license.
+
+See the full license in the `LICENSE` file.
+
+---
+## 🧪 Testing
+
+This project uses a layered test suite to validate behavior from individual agents up to full end-to-end runs.
+
+### Test Types
+
+- **Unit Tests** (`tests/unit/`)  
+  Validate each agent, tool, and guard in isolation (e.g., candle fetching, RSS parsing, recommendation logic).
+
+- **Integration Tests** (`tests/integration/`)  
+  Exercise the multi-agent pipeline across components, ensuring that Market → News → Strategy → Validation → Email work together correctly.
+
+- **System / End-to-End Tests** (`tests/system/`)  
+  Hit the public FastAPI endpoints (`/api/run`, `/api/health`, `/api/metrics`) and verify that requests flow through the entire stack, including orchestration and logging.
+
+- **Performance Tests** (`tests/performance/`)  
+  Measure latency and throughput for multiple currency pairs and validate that Prometheus metrics reflect real load.
+
+### Running Tests
+
+Run the full suite:
+
+```bash
+pytest --maxfail=1 --disable-warnings -q
+```
+
+With coverage (goal: ≥ 70% over core logic in `src/agents`, `src/tools`, `src/guards`, and `src/graph`)
+
+Current coverage (measured via `pytest --cov=src`) is **~56%** overall, with higher coverage on critical modules such as validation, schemas, orchestration (`graph.py`), and core tools (`yfinance_tool.py`, `news_tool.py`). Additional tests are planned for agent wrappers and pipeline safety fallbacks.
+
+```bash
+pytest --cov=src
+```
+
 
 ---
 

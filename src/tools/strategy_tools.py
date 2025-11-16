@@ -16,12 +16,13 @@ def _dict_to_newsitem(d: dict) -> NewsItem:
             ts_parsed = datetime.now(timezone.utc)
     else:
         ts_parsed = datetime.now(timezone.utc)
+
     return NewsItem(
         title=d.get("title", ""),
         url=d.get("url"),
         timestamp=ts_parsed,
         source=d.get("source"),
-        sentiment=None
+        sentiment=None,
     )
 
 
@@ -35,17 +36,19 @@ def run_strategy_for_pair(pair: str) -> Recommendation:
     """
 
     # --- 1️⃣ Market data ---
-    candles = fetch_forex_candles(pair, days=3)
+    candles: List[Candle] = fetch_forex_candles(pair, days=3)
 
     # --- 2️⃣ News data ---
     currency_code = pair[:3].upper()
-    news_resp = fetch_forex_news(currency_code)
-    news_items = []
-    if news_resp.get("status") in ("success", "fallback_success"):
-        for d in news_resp.get("data", []):
+    raw_news = fetch_forex_news(currency_code)  # returns List[Dict] per news_tool
+    news_items: List[NewsItem] = []
+
+    if isinstance(raw_news, list):
+        for d in raw_news:
             try:
                 news_items.append(_dict_to_newsitem(d))
             except Exception:
+                # Skip malformed news entries without failing the strategy
                 continue
 
     # --- 3️⃣ Strategy logic ---
@@ -61,7 +64,8 @@ def run_strategy_for_pair(pair: str) -> Recommendation:
                 stance="AVOID",
                 confidence=0.0,
                 horizon_hours=24,
-                rationale=["strategy error"]
+                rationale=["Strategy error: failed to build Recommendation object"],
+                news=[],
             )
 
     return rec

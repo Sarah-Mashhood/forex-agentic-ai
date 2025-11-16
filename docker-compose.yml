@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  forex-ai:
+    build: .
+    container_name: forex-agentic-ai
+    ports:
+      - "8000:8000"  # FastAPI API
+      - "8501:8501"  # Streamlit dashboard
+    env_file:
+      - .env         # created from .env.example
+    restart: unless-stopped

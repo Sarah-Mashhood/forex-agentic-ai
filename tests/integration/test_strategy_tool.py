@@ -1,5 +1,12 @@
+# tests/integration/test_strategy_tool.py
 import pytest
 from src.tools.strategy_tools import run_strategy_for_pair
+
+
+@pytest.fixture
+def sample_pair():
+    return "EURUSD"
+
 
 @pytest.mark.integration
 def test_strategy_tool_output_shape(sample_pair):

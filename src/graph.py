@@ -16,8 +16,10 @@ from datetime import datetime, timezone
 from src.tools.strategy_tools import run_strategy_for_pair
 from src.tools.email_tool import send_strategy_email
 
-# Local trace storage
-TRACE_DIR = os.path.join(os.path.dirname(__file__), "data", "traces")
+# Local trace storage (env override with sensible default)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # project root
+DEFAULT_TRACE_DIR = os.path.join(BASE_DIR, "data", "traces")
+TRACE_DIR = os.getenv("TRACE_DIR", DEFAULT_TRACE_DIR)
 os.makedirs(TRACE_DIR, exist_ok=True)
 
 
@@ -41,11 +43,16 @@ def run_pipeline_once(pair: str, dry_run_email: bool = True):
         "steps": [],
     }
 
+    rec = None  # ensure defined even if strategy fails
+
     try:
         print(f"\n🔹 Starting pipeline for {pair}")
 
         # 1️⃣ Strategy Tool (includes market + news)
-        trace["steps"].append({"step": "strategy_tool_start", "ts": datetime.now(timezone.utc).isoformat()})
+        trace["steps"].append({
+            "step": "strategy_tool_start",
+            "ts": datetime.now(timezone.utc).isoformat(),
+        })
         rec = run_strategy_for_pair(pair)
 
         # Validate Recommendation fields
@@ -64,18 +71,27 @@ def run_pipeline_once(pair: str, dry_run_email: bool = True):
         })
 
         # 2️⃣ Email Agent
-        trace["steps"].append({"step": "email_agent_start", "ts": datetime.now(timezone.utc).isoformat()})
+        trace["steps"].append({
+            "step": "email_agent_start",
+            "ts": datetime.now(timezone.utc).isoformat(),
+        })
         subject = f"Daily Forex Strategy — {rec.pair} — {rec.stance}"
         rationale = "\n".join([f"- {r}" for r in rec.rationale])
-        body = f"Pair: {rec.pair}\nStance: {rec.stance}\nConfidence: {rec.confidence:.2f}\n\nRationale:\n{rationale}\n"
+        body = (
+            f"Pair: {rec.pair}\n"
+            f"Stance: {rec.stance}\n"
+            f"Confidence: {rec.confidence:.2f}\n\n"
+            f"Rationale:\n{rationale}\n"
+        )
 
         if rec.news:
             body += "\n📰 News Highlights:\n"
             for n in rec.news[:5]:
-                title = n.title or "No title"
-                source = n.source or "Unknown"
-                url = f" ({n.url})" if n.url else ""
-                body += f"• {title} — {source}{url}\n"
+                title = getattr(n, "title", None) or "No title"
+                source = getattr(n, "source", None) or "Unknown"
+                url = getattr(n, "url", None)
+                url_suffix = f" ({url})" if url else ""
+                body += f"• {title} — {source}{url_suffix}\n"
 
         email_resp = send_strategy_email(subject, body, dry_run=dry_run_email)
 
@@ -92,7 +108,7 @@ def run_pipeline_once(pair: str, dry_run_email: bool = True):
         if email_resp.get("status") == "sent":
             print(f"📧 Email successfully sent to {email_resp.get('recipient')}")
         else:
-            print(f"✉️ Email simulated (dry-run mode)")
+            print("✉️ Email simulated (dry-run mode)")
 
         print(f"✅ Completed pipeline for {pair}")
 
@@ -102,7 +118,8 @@ def run_pipeline_once(pair: str, dry_run_email: bool = True):
         print(f"❌ Error processing {pair}: {e}")
 
     finally:
-        trace["recommendation"] = rec 
+        if rec is not None:
+            trace["recommendation"] = rec
         save_trace(run_id, trace)
         return trace
 
