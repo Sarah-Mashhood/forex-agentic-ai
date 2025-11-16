@@ -2,8 +2,16 @@
 
 ### *Built by Syeda Sarah Mashhood*
 
-![Architecture Diagram](https://user-images.githubusercontent.com/placeholder/forex-ai-architecture.png)
-*(Optional: add your architecture image later)*
+## 🏗 Architecture Diagram
+
+![Agentic Forex AI Architecture](assets/forex_agentic_architecture.png)
+
+The system follows a modular multi-agent architecture:
+
+- The **API Layer** exposes `/api/run`, `/api/health`, and `/api/metrics`
+- The **Agents Layer** coordinates Market, News, Strategy, Validation, and Email agents
+- The **Streamlit Dashboard** provides an interactive UI for running strategies and viewing recommendations
+- **Prometheus Metrics** power observability and health monitoring
 
 ---
 
