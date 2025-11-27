@@ -1,13 +1,15 @@
 # src/tools/strategy_tools.py
 from datetime import datetime, timezone
-from typing import List
+from typing import List, Any, Dict
+
 from src.tools.yfinance_tool import fetch_forex_candles
 from src.tools.news_tool import fetch_forex_news
 from src.agents.strategy_agent import simple_strategy
 from src.schemas import Candle, NewsItem, Recommendation
 
 
-def _dict_to_newsitem(d: dict) -> NewsItem:
+def _dict_to_newsitem(d: Dict[str, Any]) -> NewsItem:
+    """Safely convert a raw news dict into a NewsItem Pydantic model."""
     ts = d.get("timestamp")
     if isinstance(ts, str):
         try:
@@ -18,7 +20,7 @@ def _dict_to_newsitem(d: dict) -> NewsItem:
         ts_parsed = datetime.now(timezone.utc)
 
     return NewsItem(
-        title=d.get("title", ""),
+        title=d.get("title", "") or "",
         url=d.get("url"),
         timestamp=ts_parsed,
         source=d.get("source"),
@@ -40,11 +42,28 @@ def run_strategy_for_pair(pair: str) -> Recommendation:
 
     # --- 2️⃣ News data ---
     currency_code = pair[:3].upper()
-    raw_news = fetch_forex_news(currency_code)  # returns List[Dict] per news_tool
+    raw_news = fetch_forex_news(currency_code)
+
     news_items: List[NewsItem] = []
 
-    if isinstance(raw_news, list):
-        for d in raw_news:
+    # Because of @mcp_tool, fetch_forex_news may return:
+    #  - {"status": "success", "data": [ ... ]}
+    #  - or a raw List[Dict] (depending on how it's called)
+    payload: List[Dict[str, Any]] = []
+
+    if isinstance(raw_news, dict):
+        # Common keys used by wrappers
+        payload = (
+            raw_news.get("data")
+            or raw_news.get("output")
+            or raw_news.get("news")
+            or []
+        )
+    elif isinstance(raw_news, list):
+        payload = raw_news
+
+    if isinstance(payload, list):
+        for d in payload:
             try:
                 news_items.append(_dict_to_newsitem(d))
             except Exception:
